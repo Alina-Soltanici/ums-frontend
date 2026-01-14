@@ -415,18 +415,16 @@ const UserSecurePage = () => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, type: "spring", stiffness: 60 }}
-        className="relative max-w-2xl w-full bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-3xl p-12 shadow-[0_0_50px_rgba(0,255,255,0.3)] border border-cyan-400/20 text-center"
-      >
+       className="relative max-w-xl w-80 bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_0_25px_rgba(0,255,255,0.3)] border border-cyan-400/20 text-center">
         <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-gradient-to-tr from-cyan-500 to-blue-500 rounded-full shadow-lg animate-pulse">
-          <Users className="h-12 w-12 text-white drop-shadow-[0_0_20px_rgba(0,255,255,0.7)]" />
+         <Users className="h-10 w-10 text-white drop-shadow-[0_0_15px_rgba(0,255,255,0.7)]" />
         </div>
 
         <motion.h1
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="text-5xl font-extrabold text-white mb-4 drop-shadow-[0_0_20px_rgba(0,255,255,0.6)]"
-        >
+          className="text-3xl font-extrabold text-white mb-4" >
           User Secure Page
         </motion.h1>
 
@@ -434,8 +432,8 @@ const UserSecurePage = () => {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="text-xl text-cyan-300 mb-8"
-        >
+          className="text-lg text-cyan-300 mb-6">
+        
           {secureData}
         </motion.p>
 
@@ -527,7 +525,7 @@ const AdminSecurePage = () => {
             onClick={() => navigateTo('profile')}
             className="w-full py-3 bg-gradient-to-r from-purple-600 to-red-600 hover:from-purple-500 hover:to-red-500 text-white font-bold rounded-lg transition-all duration-300 shadow-md hover:shadow-purple-500/50"
           >
-            Back to Main Page
+            Back to Main
           </button>
         </div>
       </div>
@@ -549,17 +547,17 @@ const AdminSecurePage = () => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, type: "spring", stiffness: 60 }}
-        className="relative max-w-2xl w-full bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-3xl p-12 shadow-[0_0_50px_rgba(255,0,255,0.3)] border border-purple-400/20 text-center"
+        className="relative max-w-xl w-80 bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_0_25px_rgba(255,0,255,0.3)] border border-purple-400/20 text-center"
       >
         <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-gradient-to-tr from-purple-500 to-pink-500 rounded-full shadow-lg animate-pulse">
-          <Shield className="h-12 w-12 text-white drop-shadow-[0_0_20px_rgba(255,0,255,0.7)]" />
+         <Shield className="h-10 w-10 text-white drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]" />
         </div>
 
         <motion.h1
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="text-5xl font-extrabold text-white mb-4 drop-shadow-[0_0_20px_rgba(255,0,255,0.6)]"
+          className="text-3xl font-extrabold text-white mb-4"
         >
           Admin Secure Page
         </motion.h1>
@@ -568,7 +566,7 @@ const AdminSecurePage = () => {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="text-xl text-purple-300 mb-8"
+          className="text-lg text-purple-300 mb-6"
         >
           {secureData}
         </motion.p>
