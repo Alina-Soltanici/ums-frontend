@@ -203,7 +203,7 @@ class ApiClient {
   }
 }
 
-const apiClient = new ApiClient(process.env.REACT_APP_API_URL);
+const apiClient = new ApiClient("https://ums-backend-q689.onrender.com/api");
 
 
 // ==================== AUTH CONTEXT ====================
