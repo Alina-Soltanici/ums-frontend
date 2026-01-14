@@ -411,12 +411,13 @@ const UserSecurePage = () => {
       </div>
 
       {/* Floating Card */}
-      <motion.div
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, type: "spring", stiffness: 60 }}
-        className="relative max-w-2xl w-full bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-3xl p-12 shadow-[0_0_50px_rgba(0,255,255,0.3)] border border-cyan-400/20 text-center"
-      >
+     <motion.div
+  initial={{ y: -20, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 1, type: "spring", stiffness: 60 }}
+  className="relative max-w-md sm:max-w-xl md:max-w-2xl w-full bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 md:p-12 shadow-[0_0_50px_rgba(0,255,255,0.3)] border border-cyan-400/20 text-center"
+>
+
         <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-gradient-to-tr from-cyan-500 to-blue-500 rounded-full shadow-lg animate-pulse">
           <Users className="h-12 w-12 text-white drop-shadow-[0_0_20px_rgba(0,255,255,0.7)]" />
         </div>
@@ -425,7 +426,7 @@ const UserSecurePage = () => {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="text-5xl font-extrabold text-white mb-4 drop-shadow-[0_0_20px_rgba(0,255,255,0.6)]"
+          className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 drop-shadow-[0_0_20px_rgba(0,255,255,0.6)]"
         >
           User Secure Page
         </motion.h1>
@@ -434,8 +435,7 @@ const UserSecurePage = () => {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="text-xl text-cyan-300 mb-8"
-        >
+          className="text-base sm:text-lg md:text-xl text-cyan-300 mb-8">
           {secureData}
         </motion.p>
 
@@ -544,25 +544,25 @@ const AdminSecurePage = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-black via-transparent to-black opacity-40"></div>
       </div>
 
-      {/* Floating Card */}
-      <motion.div
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, type: "spring", stiffness: 60 }}
-        className="relative max-w-2xl w-full bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-3xl p-12 shadow-[0_0_50px_rgba(255,0,255,0.3)] border border-purple-400/20 text-center"
-      >
+     <motion.div
+  initial={{ y: -20, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 1, type: "spring", stiffness: 60 }}
+  className="relative max-w-md sm:max-w-xl md:max-w-2xl w-full bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 md:p-12 shadow-[0_0_50px_rgba(255,0,255,0.3)] border border-purple-400/20 text-center"
+>
         <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-gradient-to-tr from-purple-500 to-pink-500 rounded-full shadow-lg animate-pulse">
           <Shield className="h-12 w-12 text-white drop-shadow-[0_0_20px_rgba(255,0,255,0.7)]" />
         </div>
 
-        <motion.h1
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl font-extrabold text-white mb-4 drop-shadow-[0_0_20px_rgba(255,0,255,0.6)]"
-        >
-          Admin Secure Page
-        </motion.h1>
+       <motion.h1
+  initial={{ scale: 0.9, opacity: 0 }}
+  animate={{ scale: 1, opacity: 1 }}
+  transition={{ duration: 0.8 }}
+  className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 drop-shadow-[0_0_20px_rgba(255,0,255,0.6)]"
+>
+  Admin Secure Page
+</motion.h1>
+
 
         <motion.p
           initial={{ y: 20, opacity: 0 }}
@@ -649,7 +649,8 @@ const LoginPage = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-900/20 via-gray-900 to-cyan-900/20" />
       </div>
 
-      <div className="relative z-10 w-full max-w-md bg-gray-900/80 backdrop-blur-xl p-8 rounded-2xl border border-cyan-500/30 shadow-2xl">
+      <div className="relative z-10 w-full max-w-md bg-gray-900/80 backdrop-blur-xl p-6 sm:p-8 rounded-2xl border border-cyan-500/30 shadow-2xl">
+
         <h1 className="text-3xl font-bold text-white text-center mb-8 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
           Log in
         </h1>
@@ -731,7 +732,8 @@ const RegisterPage = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-900/20 via-gray-900 to-cyan-900/20" />
       </div>
 
-      <div className="relative z-10 w-full max-w-2xl bg-gray-900/80 backdrop-blur-xl p-8 rounded-2xl border border-cyan-500/30 shadow-2xl">
+      <div className="relative z-10 w-full max-w-md sm:max-w-2xl bg-gray-900/80 backdrop-blur-xl p-4 sm:p-8 rounded-2xl border border-cyan-500/30 shadow-2xl">
+
         <h1 className="text-3xl font-bold text-white text-center mb-8 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
           Sign up
         </h1>
@@ -825,10 +827,15 @@ const HomePage = () => {
       {/* ===== LOGOUT ===== */}
       <button
         onClick={logout}
-        className="absolute top-6 right-6 z-20 flex items-center gap-2 px-5 py-3
-        bg-blue-700/80 hover:bg-blue-800 text-white font-medium rounded-full
-        shadow-[0_0_25px_rgba(0,120,255,0.7)] transition-all"
-      >
+        className="
+  fixed top-4 right-4 sm:top-6 sm:right-6 z-20
+  flex items-center gap-2
+  px-4 py-2 sm:px-5 sm:py-3
+  bg-blue-700/80 hover:bg-blue-800
+  text-white font-medium rounded-full
+  shadow-[0_0_25px_rgba(0,120,255,0.7)]
+  transition-all
+" >
         <LogOut size={18} />
         Logout
       </button>
@@ -844,8 +851,9 @@ const HomePage = () => {
           <motion.span
             key={i}
             variants={letter}
-            className="text-6xl md:text-7xl font-extrabold tracking-[0.25em]
-            text-white drop-shadow-[0_0_35px_rgba(0,120,255,0.6)]"
+            className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-[0.25em]
+text-white drop-shadow-[0_0_35px_rgba(0,120,255,0.6)]"
+
             style={{ fontFamily: 'Inter, system-ui' }}
           >
             {char}
@@ -864,7 +872,11 @@ const HomePage = () => {
       </motion.div>
 
       {/* ===== CARDS ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-14 z-10">
+      <div className="
+  cursor-pointer
+  w-full max-w-sm h-48 sm:h-56
+  rounded-2xl
+  bg-white/5 backdrop-blur-xl">
 
         {/* USER */}
         <motion.div
@@ -873,13 +885,13 @@ const HomePage = () => {
           onClick={() => navigateTo('user-secure')}
           className="
   cursor-pointer 
-  w-80 h-56 
+  w-full max-w-sm h-48 sm:h-56
   rounded-2xl
   bg-white/5 backdrop-blur-xl
   border border-emerald-600/30
   shadow-[0_0_25px_rgba(0,180,120,0.4)]
   flex flex-col items-center justify-center gap-4 text-white
-"      >
+">
           <Users
             size={52}
             className="text-blue-500 drop-shadow-[0_0_30px_rgba(40,90,220,1)]"
