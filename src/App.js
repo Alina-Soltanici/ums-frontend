@@ -203,7 +203,8 @@ class ApiClient {
   }
 }
 
-const apiClient = new ApiClient('http://localhost:8080/api');
+const apiClient = new ApiClient(process.env.REACT_APP_API_URL);
+
 
 // ==================== AUTH CONTEXT ====================
 const AuthContext = createContext(null);
