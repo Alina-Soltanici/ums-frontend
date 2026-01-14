@@ -860,7 +860,7 @@ const HomePage = () => {
         transition={{ delay: 1.2 }}
         className="mb-16 text-lg text-blue-300 tracking-widest"
       >
-        {user?.firstName || 'User'}
+        {user?.firstName}
       </motion.div>
 
       {/* ===== CARDS ===== */}
