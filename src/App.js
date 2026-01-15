@@ -773,6 +773,9 @@ const RegisterPage = () => {
 
 
 
+
+const title = 'WELCOME';
+
 const container = {
   hidden: {},
   visible: {
@@ -843,113 +846,39 @@ const HomePage = () => {
       </button>
 
 {/* ===== WELCOME ELEGANT 3D ===== */}
+<div className="relative mb-4">
 
-{/* ===== WELCOME NEON CU ICON ===== */}
-<div className="relative mb-6 flex items-center justify-center gap-4">
+  <motion.h1
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.9 }}
+    className="
+      text-5xl md:text-6xl
+      font-extrabold tracking-[0.25em]
+      text-white
+      text-center
+      select-none
 
-  {/* Icon */}
-  <i className="fa-solid fa-font text-cyan-400 text-6xl drop-shadow-[0_0_25px_rgba(0,180,255,0.8)]"></i>
-
-  {/* WELCOME text */}
-  <motion.div
-    variants={container}
-    initial="hidden"
-    animate="visible"
-    className="relative flex"
+      /* 3D / bevel effect */
+      drop-shadow-[0_1px_0_rgba(255,255,255,0.35)]
+      drop-shadow-[0_2px_0_rgba(180,220,255,0.25)]
+      drop-shadow-[0_6px_12px_rgba(0,0,0,0.65)]
+      drop-shadow-[0_0_35px_rgba(0,160,255,0.6)]
+    "
   >
-    {'WELCOME'.split('').map((char, i) => (
-      <motion.span
-        key={i}
-        variants={letter}
-       className="
-  text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-[0.28em]
-  text-white
-  drop-shadow-[0_0_40px_rgba(0,180,255,0.9)]
-"
-
-      >
-        {char}
-      </motion.span>
-    ))}
-  </motion.div>
+    WELCOME
+  </motion.h1>
 </div>
 
-{/* ===== WELCOME NEON ===== */}
-<div className="relative mb-6">
-
-  {/* Light sweep */}
-  <motion.div
-    className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
-    initial={{ x: '-100%' }}
-    animate={{ x: '100%' }}
-    transition={{ repeat: Infinity, duration: 3, ease: 'linear' }}
-    style={{ mixBlendMode: 'screen' }}
-  />
-
-  {/* Glow aura */}
-  <div className="absolute inset-0 blur-3xl bg-cyan-500/20 rounded-full animate-pulse" />
-
-  {/* Text */}
-  <motion.div
-    variants={container}
-    initial="hidden"
-    animate="visible"
-    className="relative flex"
-  >
-    {title.split('').map((char, i) => (
-      <motion.span
-        key={i}
-        variants={letter}
-        className="
-          text-6xl md:text-7xl font-extrabold tracking-[0.28em]
-          text-white
-          drop-shadow-[0_0_40px_rgba(0,180,255,0.9)]
-        "
+      {/* USER NAME */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2 }}
+        className="mb-16 text-lg text-blue-300 tracking-widest"
       >
-        {char}
-      </motion.span>
-    ))}
-  </motion.div>
-</div>
-
-{/* USER FIRST NAME */}
-<motion.div
-  initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 1 }}
-  className="
-    mb-16
-    text-2xl md:text-3xl
-    font-semibold tracking-widest
-    text-cyan-300
-    drop-shadow-[0_0_20px_rgba(0,180,255,0.6)]
-  "
->
-  {user?.firstName}
-</motion.div>
-
-
-{/* Particles */}
-{[...Array(12)].map((_, i) => (
-  <motion.div
-    key={i}
-    className="absolute w-1 h-1 bg-cyan-400/60 rounded-full"
-    initial={{
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      opacity: 0,
-    }}
-    animate={{
-      y: '-100vh',
-      opacity: [0, 1, 0],
-    }}
-    transition={{
-      duration: 6 + Math.random() * 6,
-      repeat: Infinity,
-      delay: Math.random() * 4,
-    }}
-  />
-))}
+        {user?.firstName}
+      </motion.div>
 
       {/* ===== CARDS ===== */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-14 z-10">
