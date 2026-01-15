@@ -808,6 +808,20 @@ const HomePage = () => {
       <div className="absolute -top-40 left-1/4 w-[700px] h-[700px] bg-blue-600/20 blur-[260px] rounded-full -z-20" />
       <div className="absolute bottom-0 right-1/4 w-[700px] h-[700px] bg-indigo-500/20 blur-[260px] rounded-full -z-20" />
 
+{/* ===== AURORA NEON BACKGROUND ===== */}
+<div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
+  <motion.div
+    className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-cyan-500/30 rounded-full blur-[180px]"
+    animate={{ x: [0, 80, 0], y: [0, -60, 0] }}
+    transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+  />
+  <motion.div
+    className="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-indigo-500/30 rounded-full blur-[200px]"
+    animate={{ x: [0, -90, 0], y: [0, 70, 0] }}
+    transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+  />
+</div>
+
       {/* Grid */}
       <div
         className="absolute inset-0 opacity-15 -z-10"
@@ -830,26 +844,44 @@ const HomePage = () => {
         <LogOut size={18} />
         Logout
       </button>
+{/* ===== WELCOME NEON ===== */}
+<div className="relative mb-6">
 
-      {/* ===== WELCOME ===== */}
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="visible"
-        className="flex mb-4"
+  {/* Aurora glow behind text */}
+  <div className="absolute inset-0 blur-3xl bg-cyan-500/20 rounded-full animate-pulse" />
+
+  {/* Light sweep */}
+  <motion.div
+    className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
+    initial={{ x: '-120%' }}
+    animate={{ x: '120%' }}
+    transition={{ repeat: Infinity, duration: 3.2, ease: 'linear' }}
+    style={{ mixBlendMode: 'screen' }}
+  />
+
+  {/* WELCOME text */}
+  <motion.div
+    variants={container}
+    initial="hidden"
+    animate="visible"
+    className="relative flex"
+  >
+    {title.split('').map((char, i) => (
+      <motion.span
+        key={i}
+        variants={letter}
+        className="
+          text-5xl md:text-6xl
+          font-extrabold tracking-[0.26em]
+          text-white
+          drop-shadow-[0_0_35px_rgba(0,180,255,0.9)]
+        "
       >
-        {title.split('').map((char, i) => (
-          <motion.span
-            key={i}
-            variants={letter}
-            className="text-6xl md:text-7xl font-extrabold tracking-[0.25em]
-            text-white drop-shadow-[0_0_35px_rgba(0,120,255,0.6)]"
-            style={{ fontFamily: 'Inter, system-ui' }}
-          >
-            {char}
-          </motion.span>
-        ))}
-      </motion.div>
+        {char}
+      </motion.span>
+    ))}
+  </motion.div>
+</div>
 
       {/* USER NAME */}
       <motion.div
