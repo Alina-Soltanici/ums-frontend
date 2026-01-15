@@ -844,22 +844,23 @@ const HomePage = () => {
         <LogOut size={18} />
         Logout
       </button>
-{/* ===== WELCOME NEON ===== */}
+
+{/* ===== WELCOME 3D GLOSSY ===== */}
 <div className="relative mb-6">
 
-  {/* Aurora glow behind text */}
-  <div className="absolute inset-0 blur-3xl bg-cyan-500/20 rounded-full animate-pulse" />
+  {/* Outer glow */}
+  <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-indigo-500/30 rounded-full" />
 
-  {/* Light sweep */}
+  {/* Shine sweep */}
   <motion.div
-    className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
+    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
     initial={{ x: '-120%' }}
     animate={{ x: '120%' }}
-    transition={{ repeat: Infinity, duration: 3.2, ease: 'linear' }}
-    style={{ mixBlendMode: 'screen' }}
+    transition={{ repeat: Infinity, duration: 3.5, ease: 'linear' }}
+    style={{ mixBlendMode: 'overlay' }}
   />
 
-  {/* WELCOME text */}
+  {/* Text */}
   <motion.div
     variants={container}
     initial="hidden"
@@ -873,8 +874,10 @@ const HomePage = () => {
         className="
           text-5xl md:text-6xl
           font-extrabold tracking-[0.26em]
-          text-white
-          drop-shadow-[0_0_35px_rgba(0,180,255,0.9)]
+          bg-gradient-to-b from-white via-cyan-200 to-cyan-500
+          bg-clip-text text-transparent
+          drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]
+          drop-shadow-[0_0_25px_rgba(0,180,255,0.9)]
         "
       >
         {char}
@@ -883,20 +886,27 @@ const HomePage = () => {
   </motion.div>
 </div>
 
+
       {/* USER NAME */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="mb-16 text-lg text-blue-300 tracking-widest"
-      >
-        {user?.firstName}
-      </motion.div>
+   {/* USER NAME */}
+<motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 1.2 }}
+  className="
+    mb-16 text-2xl md:text-3xl font-semibold tracking-widest
+    bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-400
+    bg-clip-text text-transparent
+    drop-shadow-[0_0_25px_rgba(0,160,255,0.7)]
+  "
+>
+  {user?.firstName}
+</motion.div>
+
 
       {/* ===== CARDS ===== */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-14 z-10">
 
-        {/* USER */}
         {/* USER */}
 <motion.div
   whileHover={{ scale: 1.06, rotateX: 5, rotateY: -5 }}
