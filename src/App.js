@@ -773,9 +773,6 @@ const RegisterPage = () => {
 
 
 
-
-const title = 'WELCOME';
-
 const container = {
   hidden: {},
   visible: {
@@ -846,6 +843,37 @@ const HomePage = () => {
       </button>
 
 {/* ===== WELCOME ELEGANT 3D ===== */}
+
+{/* ===== WELCOME NEON CU ICON ===== */}
+<div className="relative mb-6 flex items-center justify-center gap-4">
+
+  {/* Icon */}
+  <i className="fa-solid fa-font text-cyan-400 text-6xl drop-shadow-[0_0_25px_rgba(0,180,255,0.8)]"></i>
+
+  {/* WELCOME text */}
+  <motion.div
+    variants={container}
+    initial="hidden"
+    animate="visible"
+    className="relative flex"
+  >
+    {'WELCOME'.split('').map((char, i) => (
+      <motion.span
+        key={i}
+        variants={letter}
+       className="
+  text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-[0.28em]
+  text-white
+  drop-shadow-[0_0_40px_rgba(0,180,255,0.9)]
+"
+
+      >
+        {char}
+      </motion.span>
+    ))}
+  </motion.div>
+</div>
+
 {/* ===== WELCOME NEON ===== */}
 <div className="relative mb-6">
 
