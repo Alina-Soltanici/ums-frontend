@@ -884,6 +884,22 @@ const HomePage = () => {
   </motion.div>
 </div>
 
+{/* USER FIRST NAME */}
+<motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 1 }}
+  className="
+    mb-16
+    text-2xl md:text-3xl
+    font-semibold tracking-widest
+    text-cyan-300
+    drop-shadow-[0_0_20px_rgba(0,180,255,0.6)]
+  "
+>
+  {user?.firstName}
+</motion.div>
+
 
 {/* Particles */}
 {[...Array(12)].map((_, i) => (
