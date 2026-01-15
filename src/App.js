@@ -923,16 +923,6 @@ const HomePage = () => {
   />
 ))}
 
-      {/* USER NAME */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="mb-16 text-lg text-blue-300 tracking-widest"
-      >
-        {user?.firstName}
-      </motion.div>
-
       {/* ===== CARDS ===== */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-14 z-10">
 
