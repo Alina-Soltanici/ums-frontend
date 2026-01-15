@@ -845,68 +845,45 @@ const HomePage = () => {
         Logout
       </button>
 
-{/* ===== WELCOME 3D GLOSSY ===== */}
-<div className="relative mb-6">
+{/* ===== WELCOME ELEGANT 3D ===== */}
+<div className="relative mb-4">
 
-  {/* Outer glow */}
-  <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-indigo-500/30 rounded-full" />
+  <motion.h1
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.9 }}
+    className="
+      text-5xl md:text-6xl
+      font-extrabold tracking-[0.25em]
+      text-white
+      text-center
+      select-none
 
-  {/* Shine sweep */}
-  <motion.div
-    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-    initial={{ x: '-120%' }}
-    animate={{ x: '120%' }}
-    transition={{ repeat: Infinity, duration: 3.5, ease: 'linear' }}
-    style={{ mixBlendMode: 'overlay' }}
-  />
-
-  {/* Text */}
-  <motion.div
-    variants={container}
-    initial="hidden"
-    animate="visible"
-    className="relative flex"
+      /* 3D / bevel effect */
+      drop-shadow-[0_1px_0_rgba(255,255,255,0.35)]
+      drop-shadow-[0_2px_0_rgba(180,220,255,0.25)]
+      drop-shadow-[0_6px_12px_rgba(0,0,0,0.65)]
+      drop-shadow-[0_0_35px_rgba(0,160,255,0.6)]
+    "
   >
-    {title.split('').map((char, i) => (
-      <motion.span
-        key={i}
-        variants={letter}
-        className="
-          text-5xl md:text-6xl
-          font-extrabold tracking-[0.26em]
-          bg-gradient-to-b from-white via-cyan-200 to-cyan-500
-          bg-clip-text text-transparent
-          drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]
-          drop-shadow-[0_0_25px_rgba(0,180,255,0.9)]
-        "
-      >
-        {char}
-      </motion.span>
-    ))}
-  </motion.div>
+    WELCOME
+  </motion.h1>
 </div>
 
-
       {/* USER NAME */}
-   {/* USER NAME */}
-<motion.div
-  initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 1.2 }}
-  className="
-    mb-16 text-2xl md:text-3xl font-semibold tracking-widest
-    bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-400
-    bg-clip-text text-transparent
-    drop-shadow-[0_0_25px_rgba(0,160,255,0.7)]
-  "
->
-  {user?.firstName}
-</motion.div>
-
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2 }}
+        className="mb-16 text-lg text-blue-300 tracking-widest"
+      >
+        {user?.firstName}
+      </motion.div>
 
       {/* ===== CARDS ===== */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-14 z-10">
 
+        {/* USER */}
         {/* USER */}
 <motion.div
   whileHover={{ scale: 1.06, rotateX: 5, rotateY: -5 }}
