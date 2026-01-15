@@ -846,29 +846,66 @@ const HomePage = () => {
       </button>
 
 {/* ===== WELCOME ELEGANT 3D ===== */}
-<div className="relative mb-4">
+{/* ===== WELCOME NEON ===== */}
+<div className="relative mb-6">
 
-  <motion.h1
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.9 }}
-    className="
-      text-5xl md:text-6xl
-      font-extrabold tracking-[0.25em]
-      text-white
-      text-center
-      select-none
+  {/* Light sweep */}
+  <motion.div
+    className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
+    initial={{ x: '-100%' }}
+    animate={{ x: '100%' }}
+    transition={{ repeat: Infinity, duration: 3, ease: 'linear' }}
+    style={{ mixBlendMode: 'screen' }}
+  />
 
-      /* 3D / bevel effect */
-      drop-shadow-[0_1px_0_rgba(255,255,255,0.35)]
-      drop-shadow-[0_2px_0_rgba(180,220,255,0.25)]
-      drop-shadow-[0_6px_12px_rgba(0,0,0,0.65)]
-      drop-shadow-[0_0_35px_rgba(0,160,255,0.6)]
-    "
+  {/* Glow aura */}
+  <div className="absolute inset-0 blur-3xl bg-cyan-500/20 rounded-full animate-pulse" />
+
+  {/* Text */}
+  <motion.div
+    variants={container}
+    initial="hidden"
+    animate="visible"
+    className="relative flex"
   >
-    WELCOME
-  </motion.h1>
+    {title.split('').map((char, i) => (
+      <motion.span
+        key={i}
+        variants={letter}
+        className="
+          text-6xl md:text-7xl font-extrabold tracking-[0.28em]
+          text-white
+          drop-shadow-[0_0_40px_rgba(0,180,255,0.9)]
+        "
+      >
+        {char}
+      </motion.span>
+    ))}
+  </motion.div>
 </div>
+
+
+{/* Particles */}
+{[...Array(12)].map((_, i) => (
+  <motion.div
+    key={i}
+    className="absolute w-1 h-1 bg-cyan-400/60 rounded-full"
+    initial={{
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      opacity: 0,
+    }}
+    animate={{
+      y: '-100vh',
+      opacity: [0, 1, 0],
+    }}
+    transition={{
+      duration: 6 + Math.random() * 6,
+      repeat: Infinity,
+      delay: Math.random() * 4,
+    }}
+  />
+))}
 
       {/* USER NAME */}
       <motion.div
