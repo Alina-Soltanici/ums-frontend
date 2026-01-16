@@ -28,30 +28,25 @@ class AuthService {
   }
 
 
-  setTokens(accessToken, refreshToken, userId = null) {
-    this.accessToken = accessToken;
-    this.refreshToken = refreshToken;
-    this.userId = userId;
-    
-    // Extrage TOATE rolurile din access token
-    if (accessToken) {
-      const decoded = this.decodeToken(accessToken);
-      if (decoded && decoded.authorities) {
-        // Extrage toate rolurile și elimină prefixul "ROLE_"
-        this.roles = decoded.authorities.map(authority => 
-          authority.replace('ROLE_', '')
-        );
-        console.log('📋 User roles extracted:', this.roles);
-      }
+  setTokens(accessToken, refreshToken, userId = null, roles = []) {
+  this.accessToken = accessToken;
+  this.refreshToken = refreshToken;
+  this.userId = userId;
+
+  if (roles && roles.length > 0) {
+    this.roles = roles.map(r => r.replace('ROLE_', ''));
+  } else if (accessToken) {
+    const decoded = this.decodeToken(accessToken);
+    if (decoded?.authorities) {
+      this.roles = decoded.authorities.map(a => a.replace('ROLE_', ''));
     }
-    
-    console.log('✅ Tokens saved:', { 
-      accessToken: accessToken?.substring(0, 30) + '...', 
-      refreshToken: refreshToken?.substring(0, 30) + '...', 
-      userId,
-      roles: this.roles
-    });
   }
+
+  console.log('✅ Tokens saved:', {
+    userId: this.userId,
+    roles: this.roles
+  });
+}
 
   getAccessToken() {
     return this.accessToken;
@@ -199,7 +194,12 @@ class ApiClient {
       const data = await response.json();
       console.log('✅ Refresh successful!');
 
-      authService.setTokens(data.accessToken, data.refreshToken);
+    authService.setTokens(
+  data.accessToken,
+  data.refreshToken,
+  authService.getUserId(),
+  authService.getRoles()
+);
 
       return { accessToken: data.accessToken, refreshToken: data.refreshToken };
     } catch (error) {
@@ -277,9 +277,21 @@ const AuthProvider = ({ children }) => {
       const { data } = await apiClient.post('/auth/signup', userData);
       
       console.log('📥 Register response received');
-      authService.setTokens(data.accessToken, data.refreshToken);
+      authService.setTokens(
+  data.accessToken,
+  data.refreshToken,
+  data.userId,
+  data.roles
+);
+
       
-      setUser(userData);
+     setUser({
+  email: userData.email,
+  userId: data.userId,
+  roles: data.roles,
+  firstName: userData.firstName
+});
+
       navigateTo('profile');
       return data;
     } catch (error) {
@@ -288,28 +300,31 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (credentials) => {
+ const login = async (credentials) => {
   try {
     console.log('📤 Sending login request for:', credentials.email);
+
     const { data } = await apiClient.post('/auth/login', credentials);
-    
+
     console.log('📥 Login response received:', data);
+
     
-    // Setează tokens - AuthService va extrage automat rolurile din JWT
-    authService.setTokens(data.accessToken, data.refreshToken, data.userId);
-    
-    // Obține rolurile extrase
-    const userRoles = authService.getRoles();
-    
-    console.log('✅ Login successful, roles:', userRoles);
-    
-    setUser({ 
+    authService.setTokens(
+      data.accessToken,
+      data.refreshToken,
+      data.userId,
+      data.roles 
+    );
+
+    console.log('✅ Login successful, roles:', data.roles);
+
+    setUser({
       email: credentials.email,
       userId: data.userId,
-      roles: userRoles, // ARRAY de roluri
-      firstName: data.firstName
+      roles: data.roles, // ARRAY
+      firstName: data.firstName,
     });
-    
+
     navigateTo('profile');
     return data;
   } catch (error) {
@@ -317,6 +332,7 @@ const AuthProvider = ({ children }) => {
     throw error;
   }
 };
+
 
   const logout = async () => {
     try {
