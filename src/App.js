@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 // ==================== AUTH SERVICE ====================
 
+//versiunea mea
 class AuthService {
   constructor() {
    this.accessToken = null;
@@ -26,25 +27,26 @@ class AuthService {
     }
   }
 
+
   setTokens(accessToken, refreshToken, userId = null, roles = []) {
-    this.accessToken = accessToken;
-    this.refreshToken = refreshToken;
-    this.userId = userId;
+  this.accessToken = accessToken;
+  this.refreshToken = refreshToken;
+  this.userId = userId;
 
-    if (roles && roles.length > 0) {
-      this.roles = roles.map(r => r.replace('ROLE_', ''));
-    } else if (accessToken) {
-      const decoded = this.decodeToken(accessToken);
-      if (decoded?.authorities) {
-        this.roles = decoded.authorities.map(a => a.replace('ROLE_', ''));
-      }
+  if (roles && roles.length > 0) {
+    this.roles = roles.map(r => r.replace('ROLE_', ''));
+  } else if (accessToken) {
+    const decoded = this.decodeToken(accessToken);
+    if (decoded?.authorities) {
+      this.roles = decoded.authorities.map(a => a.replace('ROLE_', ''));
     }
-
-    console.log('✅ Tokens saved:', {
-      userId: this.userId,
-      roles: this.roles
-    });
   }
+
+  console.log('✅ Tokens saved:', {
+    userId: this.userId,
+    roles: this.roles
+  });
+}
 
   getAccessToken() {
     return this.accessToken;
@@ -62,6 +64,7 @@ class AuthService {
     return this.roles;
   }
 
+
   clearTokens() {
     this.accessToken = null;
     this.refreshToken = null;
@@ -74,7 +77,7 @@ class AuthService {
     return !!this.accessToken;
   }
 
-  hasRole(role) {
+   hasRole(role) {
     return this.roles.includes(role);
   }
 
@@ -85,6 +88,7 @@ class AuthService {
   hasAllRoles(...roles) {
     return roles.every(role => this.roles.includes(role));
   }
+
 }
 
 const authService = new AuthService();
@@ -137,9 +141,7 @@ class ApiClient {
       }
 
       if (!response.ok) {
-        const error = new Error(data.message || `Request failed: ${response.status}`);
-        error.status = response.status;
-        throw error;
+        throw new Error(data.message || `Request failed: ${response.status}`);
       }
 
       console.log(`✅ Request successful: ${url}`);
@@ -192,12 +194,12 @@ class ApiClient {
       const data = await response.json();
       console.log('✅ Refresh successful!');
 
-      authService.setTokens(
-        data.accessToken,
-        data.refreshToken,
-        authService.getUserId(),
-        authService.getRoles()
-      );
+    authService.setTokens(
+  data.accessToken,
+  data.refreshToken,
+  authService.getUserId(),
+  authService.getRoles()
+);
 
       return { accessToken: data.accessToken, refreshToken: data.refreshToken };
     } catch (error) {
@@ -240,6 +242,7 @@ class ApiClient {
 
 const apiClient = new ApiClient("https://ums-backend-q689.onrender.com");
 
+
 // ==================== AUTH CONTEXT ====================
 const AuthContext = createContext(null);
 
@@ -275,18 +278,19 @@ const AuthProvider = ({ children }) => {
       
       console.log('📥 Register response received');
       authService.setTokens(
-        data.accessToken,
-        data.refreshToken,
-        data.userId,
-        data.roles
-      );
+  data.accessToken,
+  data.refreshToken,
+  data.userId,
+  data.roles
+);
+
       
-      setUser({
-        email: userData.email,
-        userId: data.userId,
-        roles: data.roles,
-        firstName: userData.firstName
-      });
+     setUser({
+  email: userData.email,
+  userId: data.userId,
+  roles: data.roles,
+  firstName: userData.firstName
+});
 
       navigateTo('profile');
       return data;
@@ -296,37 +300,39 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (credentials) => {
-    try {
-      console.log('📤 Sending login request for:', credentials.email);
+ const login = async (credentials) => {
+  try {
+    console.log('📤 Sending login request for:', credentials.email);
 
-      const { data } = await apiClient.post('/auth/login', credentials);
+    const { data } = await apiClient.post('/auth/login', credentials);
 
-      console.log('📥 Login response received:', data);
+    console.log('📥 Login response received:', data);
 
-      authService.setTokens(
-        data.accessToken,
-        data.refreshToken,
-        data.userId,
-        data.roles 
-      );
+    
+    authService.setTokens(
+      data.accessToken,
+      data.refreshToken,
+      data.userId,
+      data.roles 
+    );
 
-      console.log('✅ Login successful, roles:', data.roles);
+    console.log('✅ Login successful, roles:', data.roles);
 
-      setUser({
-        email: credentials.email,
-        userId: data.userId,
-        roles: data.roles,
-        firstName: data.firstName,
-      });
+    setUser({
+      email: credentials.email,
+      userId: data.userId,
+      roles: data.roles, // ARRAY
+      firstName: data.firstName,
+    });
 
-      navigateTo('profile');
-      return data;
-    } catch (error) {
-      console.error('❌ Login error:', error);
-      throw error;
-    }
-  };
+    navigateTo('profile');
+    return data;
+  } catch (error) {
+    console.error('❌ Login error:', error);
+    throw error;
+  }
+};
+
 
   const logout = async () => {
     try {
@@ -396,40 +402,41 @@ const InputField = ({ icon: Icon, label, name, type = 'text', placeholder, value
 
 // ==================== USER SECURE PAGE ====================
 const UserSecurePage = () => {
-  const { logout, navigateTo, user } = useAuth();
+  const { logout, navigateTo } = useAuth();
   const [secureData, setSecureData] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  React.useEffect(() => {
-    const fetchSecureData = async () => {
-      if (!authService.isAuthenticated()) {
-        setError('NOT_AUTHENTICATED');
-        setIsLoading(false);
-        return;
-      }
+ 
+React.useEffect(() => {
+  const fetchSecureData = async () => {
+    if (!authService.isAuthenticated()) {
+      setError('NOT_AUTHENTICATED');
+      setIsLoading(false);
+      return;
+    }
 
-      const hasAccess = authService.hasAnyRole('USER', 'ADMIN');
-      console.log('🔍 Checking user access, has USER or ADMIN role:', hasAccess);
+    const hasAccess = authService.hasAnyRole('USER', 'ADMIN');
+    console.log('🔍 Checking user access, has USER or ADMIN role:', hasAccess);
 
-      if (!hasAccess) {
-        setError('FORBIDDEN');
-        setIsLoading(false);
-        return;
-      }
+    if (!hasAccess) {
+      setError('FORBIDDEN');
+      setIsLoading(false);
+      return;
+    }
 
-      try {
-        const { data } = await apiClient.get('/user/secure');
-        setSecureData(data);
-      } catch (err) {
-        setError('FORBIDDEN');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    try {
+      const { data } = await apiClient.get('/user/secure');
+      setSecureData(data);
+    } catch (err) {
+      setError('FORBIDDEN');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    fetchSecureData();
-  }, [navigateTo, user]);
+  fetchSecureData();
+}, [navigateTo, user]); // <-- adaugă 'user' ca dependență
 
   if (isLoading) {
     return (
@@ -463,6 +470,7 @@ const UserSecurePage = () => {
 
   return (
     <div className="min-h-screen relative flex flex-col items-center justify-center overflow-hidden bg-black">
+      {/* Neon Floating Orbs */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-1/4 left-1/5 w-96 h-96 bg-gradient-to-tr from-cyan-500/50 to-blue-500/50 rounded-full blur-3xl animate-[float_12s_ease-in-out_infinite]"></div>
         <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-gradient-to-tr from-purple-500/40 to-pink-500/40 rounded-full blur-3xl animate-[float_15s_ease-in-out_infinite]"></div>
@@ -470,20 +478,21 @@ const UserSecurePage = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-black via-transparent to-black opacity-40"></div>
       </div>
 
+      {/* Floating Card */}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, type: "spring", stiffness: 60 }}
-        className="relative max-w-xl w-80 bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_0_25px_rgba(0,255,255,0.3)] border border-cyan-400/20 text-center">
+       className="relative max-w-xl w-80 bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_0_25px_rgba(0,255,255,0.3)] border border-cyan-400/20 text-center">
         <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-gradient-to-tr from-cyan-500 to-blue-500 rounded-full shadow-lg animate-pulse">
-          <Users className="h-10 w-10 text-white drop-shadow-[0_0_15px_rgba(0,255,255,0.7)]" />
+         <Users className="h-10 w-10 text-white drop-shadow-[0_0_15px_rgba(0,255,255,0.7)]" />
         </div>
 
         <motion.h1
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="text-3xl font-extrabold text-white mb-4">
+          className="text-3xl font-extrabold text-white mb-4" >
           User Secure Page
         </motion.h1>
 
@@ -492,9 +501,11 @@ const UserSecurePage = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.6 }}
           className="text-lg text-cyan-300 mb-6">
+        
           {secureData}
         </motion.p>
 
+        {/* Buttons */}
         <div className="flex gap-8 justify-center">
           <motion.button
             whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(0,255,255,0.7)' }}
@@ -512,6 +523,14 @@ const UserSecurePage = () => {
             Logout
           </motion.button>
         </div>
+      </motion.div>
+
+      {/* Footer Glow */}
+      <motion.div
+        animate={{ opacity: [0.6, 1, 0.6] }}
+        transition={{ repeat: Infinity, duration: 2 }}
+        className="absolute bottom-10 text-center text-cyan-400 text-lg font-semibold drop-shadow-[0_0_15px_rgba(0,255,255,0.7)]"
+      >
       </motion.div>
     </div>
   );
@@ -532,6 +551,7 @@ const AdminSecurePage = () => {
         return;
       }
 
+    
       const hasAdminRole = authService.hasRole('ADMIN');
       console.log('🔍 Checking admin access, has ADMIN role:', hasAdminRole);
       
@@ -588,6 +608,7 @@ const AdminSecurePage = () => {
 
   return (
     <div className="min-h-screen relative flex flex-col items-center justify-center overflow-hidden bg-black">
+      {/* Neon Floating Orbs */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-1/4 left-1/5 w-96 h-96 bg-gradient-to-tr from-purple-500/50 to-pink-500/50 rounded-full blur-3xl animate-[float_12s_ease-in-out_infinite]"></div>
         <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-gradient-to-tr from-indigo-500/40 to-purple-500/40 rounded-full blur-3xl animate-[float_15s_ease-in-out_infinite]"></div>
@@ -595,6 +616,7 @@ const AdminSecurePage = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-black via-transparent to-black opacity-40"></div>
       </div>
 
+      {/* Floating Card */}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -602,7 +624,7 @@ const AdminSecurePage = () => {
         className="relative max-w-xl w-80 bg-gradient-to-tr from-gray-900/60 to-gray-800/60 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_0_25px_rgba(255,0,255,0.3)] border border-purple-400/20 text-center"
       >
         <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-gradient-to-tr from-purple-500 to-pink-500 rounded-full shadow-lg animate-pulse">
-          <Shield className="h-10 w-10 text-white drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]" />
+         <Shield className="h-10 w-10 text-white drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]" />
         </div>
 
         <motion.h1
@@ -623,6 +645,7 @@ const AdminSecurePage = () => {
           {secureData}
         </motion.p>
 
+        {/* Buttons */}
         <div className="flex gap-8 justify-center">
           <motion.button
             whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(255,0,255,0.7)' }}
@@ -641,11 +664,23 @@ const AdminSecurePage = () => {
           </motion.button>
         </div>
       </motion.div>
+
+      {/* Footer Glow */}
+      <motion.div
+        animate={{ opacity: [0.6, 1, 0.6] }}
+        transition={{ repeat: Infinity, duration: 2 }}
+        className="absolute bottom-10 text-center text-purple-400 text-lg font-semibold drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
+      >
+     
+      </motion.div>
     </div>
   );
 };
 
-// ==================== LOGIN PAGE ====================
+
+// ==================== PROFILE PAGE ====================
+
+
 const LoginPage = () => {
   const { login, toggleAuthMode } = useAuth();
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -675,23 +710,28 @@ const LoginPage = () => {
     try {
       await login(formData);
     } catch (error) {
-      console.log('LOGIN ERROR:', error);
+  console.log('LOGIN ERROR:', error);
 
-      if (error.status === 401 || error.status === 403) {
-        setSubmitStatus({
-          type: 'error',
-          message: error.message || 'Wrong email or password'
-        });
-      } else {
-        setSubmitStatus({
-          type: 'error',
-          message: 'Something went wrong. Please try again.'
-        });
-      }
+  if (error.status === 401) {
+    setSubmitStatus({
+      type: 'error',
+      message: error.message || 'Wrong email or password'
+    });
+  } else if (error.status === 403) {
+    setSubmitStatus({
+      type: 'error',
+      message: 'You do not have permission to access this resource'
+    });
+  } else {
+    setSubmitStatus({
+      type: 'error',
+      message: 'Something went wrong. Please try again.'
+    });
+  }
 
-      setIsLoading(false);
-    }
-  };
+  setIsLoading(false);
+}
+};
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 relative overflow-hidden">
@@ -713,7 +753,7 @@ const LoginPage = () => {
 
         <div className="space-y-5">
           <InputField icon={Mail} label="Email" name="email" type="email" value={formData.email} onChange={handleChange} error={errors.email} placeholder="john.doe@email.com" />
-          <InputField icon={Lock} label="Password" name="password" type="password" value={formData.password} onChange={handleChange} error={errors.password} placeholder="Enter password" />
+          <InputField icon={Lock} label="Parolă" name="password" type="password" value={formData.password} onChange={handleChange} error={errors.password} placeholder="Enter password" />
 
           <button onClick={handleSubmit} disabled={isLoading} className="w-full py-4 bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white font-bold rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-cyan-500/50">
             {isLoading ? <span className="flex items-center justify-center gap-2"><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />Processing...</span> : 'Log in'}
@@ -727,22 +767,6 @@ const LoginPage = () => {
     </div>
   );
 };
-
-// ==================== REGISTER PAGE ====================
-const RegisterPage = () => {
-  const { register, toggleAuthMode } = useAuth();
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    phoneNumber: '',
-    address: '',
-    city: ''
-  });
-  const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [submitStatus, setSubmitStatus]
 
 const RegisterPage = () => {
   const { register, toggleAuthMode } = useAuth();
