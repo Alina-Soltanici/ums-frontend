@@ -407,38 +407,36 @@ const UserSecurePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  React.useEffect(() => {
-    const fetchSecureData = async () => {
-      if (!authService.isAuthenticated()) {
-        setError('NOT_AUTHENTICATED');
-        setIsLoading(false);
-        return;
-      }
+ 
+React.useEffect(() => {
+  const fetchSecureData = async () => {
+    if (!authService.isAuthenticated()) {
+      setError('NOT_AUTHENTICATED');
+      setIsLoading(false);
+      return;
+    }
 
-    
-      const hasAccess = authService.hasAnyRole('USER', 'ADMIN');
-      console.log('🔍 Checking user access, has USER or ADMIN role:', hasAccess);
-      
-      if (!hasAccess) {
-        console.log('❌ Access denied - user does not have USER or ADMIN role');
-        setError('FORBIDDEN');
-        setIsLoading(false);
-        return;
-      }
+    const hasAccess = authService.hasAnyRole('USER', 'ADMIN');
+    console.log('🔍 Checking user access, has USER or ADMIN role:', hasAccess);
 
-      try {
-        const { data } = await apiClient.get('/user/secure');
-        setSecureData(data);
-      } catch (err) {
-        console.error('❌ Failed to fetch user data:', err);
-        setError('FORBIDDEN');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (!hasAccess) {
+      setError('FORBIDDEN');
+      setIsLoading(false);
+      return;
+    }
 
-    fetchSecureData();
-  }, [navigateTo]);
+    try {
+      const { data } = await apiClient.get('/user/secure');
+      setSecureData(data);
+    } catch (err) {
+      setError('FORBIDDEN');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchSecureData();
+}, [navigateTo, user]); // <-- adaugă 'user' ca dependență
 
   if (isLoading) {
     return (
