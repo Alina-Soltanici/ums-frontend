@@ -701,36 +701,31 @@ const LoginPage = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+const handleSubmit = async () => {
+  if (!validateForm()) return;
+  setIsLoading(true);
+  setSubmitStatus(null);
+  
+  try {
+    await login(formData);
+  } catch (error) {
+    console.log('LOGIN ERROR:', error);
 
-  const handleSubmit = async () => {
-    if (!validateForm()) return;
-    setIsLoading(true);
-    setSubmitStatus(null);
-    
-    try {
-      await login(formData);
-    } catch (error) {
-  console.log('LOGIN ERROR:', error);
+    // Tratează atât 401 cât și 403 ca erori de autentificare
+    if (error.status === 401 || error.status === 403) {
+      setSubmitStatus({
+        type: 'error',
+        message: error.message || 'Wrong email or password'
+      });
+    } else {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Something went wrong. Please try again.'
+      });
+    }
 
-  if (error.status === 401) {
-    setSubmitStatus({
-      type: 'error',
-      message: error.message || 'Wrong email or password'
-    });
-  } else if (error.status === 403) {
-    setSubmitStatus({
-      type: 'error',
-      message: 'You do not have permission to access this resource'
-    });
-  } else {
-    setSubmitStatus({
-      type: 'error',
-      message: 'Something went wrong. Please try again.'
-    });
+    setIsLoading(false);
   }
-
-  setIsLoading(false);
-}
 };
 
   return (
