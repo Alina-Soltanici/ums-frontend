@@ -7,22 +7,49 @@ import { motion } from 'framer-motion';
 //versiunea mea
 class AuthService {
   constructor() {
-    this.accessToken = null;
+   this.accessToken = null;
     this.refreshToken = null;
     this.userId = null;
-    this.role = null;
+    this.roles = [];
   }
 
-  setTokens(accessToken, refreshToken, userId = null, role = null) {
+  decodeToken(token) {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      console.error('Failed to decode token:', e);
+      return null;
+    }
+  }
+
+
+  setTokens(accessToken, refreshToken, userId = null) {
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
     this.userId = userId;
-    this.role = role;
+    
+    // Extrage TOATE rolurile din access token
+    if (accessToken) {
+      const decoded = this.decodeToken(accessToken);
+      if (decoded && decoded.authorities) {
+        // Extrage toate rolurile și elimină prefixul "ROLE_"
+        this.roles = decoded.authorities.map(authority => 
+          authority.replace('ROLE_', '')
+        );
+        console.log('📋 User roles extracted:', this.roles);
+      }
+    }
+    
     console.log('✅ Tokens saved:', { 
       accessToken: accessToken?.substring(0, 30) + '...', 
       refreshToken: refreshToken?.substring(0, 30) + '...', 
       userId,
-      role
+      roles: this.roles
     });
   }
 
@@ -38,15 +65,16 @@ class AuthService {
     return this.userId;
   }
 
-  getRole() {
-    return this.role;
+  getRoles() {
+    return this.roles;
   }
+
 
   clearTokens() {
     this.accessToken = null;
     this.refreshToken = null;
     this.userId = null;
-    this.role = null;
+    this.roles = [];
     console.log('🗑️ Tokens cleared');
   }
 
@@ -54,9 +82,18 @@ class AuthService {
     return !!this.accessToken;
   }
 
-  hasRole(role) {
-    return this.role === role;
+   hasRole(role) {
+    return this.roles.includes(role);
   }
+
+  hasAnyRole(...roles) {
+    return roles.some(role => this.roles.includes(role));
+  }
+
+  hasAllRoles(...roles) {
+    return roles.every(role => this.roles.includes(role));
+  }
+
 }
 
 const authService = new AuthService();
@@ -252,29 +289,34 @@ const AuthProvider = ({ children }) => {
   };
 
   const login = async (credentials) => {
-    try {
-      console.log('📤 Sending login request for:', credentials.email);
-      const { data } = await apiClient.post('/auth/login', credentials);
-      
-      console.log('📥 Login response received:', data);
-      authService.setTokens(data.accessToken, data.refreshToken, data.userId, data.role);
-      
-      console.log('✅ Login successful, role:', data.role);
-      
-      setUser({ 
-        email: credentials.email,
-        userId: data.userId,
-        role: data.role,
-        firstName: data.firstName
-      });
-      
-      navigateTo('profile');
-      return data;
-    } catch (error) {
-      console.error('❌ Login error:', error);
-      throw error;
-    }
-  };
+  try {
+    console.log('📤 Sending login request for:', credentials.email);
+    const { data } = await apiClient.post('/auth/login', credentials);
+    
+    console.log('📥 Login response received:', data);
+    
+    // Setează tokens - AuthService va extrage automat rolurile din JWT
+    authService.setTokens(data.accessToken, data.refreshToken, data.userId);
+    
+    // Obține rolurile extrase
+    const userRoles = authService.getRoles();
+    
+    console.log('✅ Login successful, roles:', userRoles);
+    
+    setUser({ 
+      email: credentials.email,
+      userId: data.userId,
+      roles: userRoles, // ARRAY de roluri
+      firstName: data.firstName
+    });
+    
+    navigateTo('profile');
+    return data;
+  } catch (error) {
+    console.error('❌ Login error:', error);
+    throw error;
+  }
+};
 
   const logout = async () => {
     try {
@@ -357,10 +399,22 @@ const UserSecurePage = () => {
         return;
       }
 
+    
+      const hasAccess = authService.hasAnyRole('USER', 'ADMIN');
+      console.log('🔍 Checking user access, has USER or ADMIN role:', hasAccess);
+      
+      if (!hasAccess) {
+        console.log('❌ Access denied - user does not have USER or ADMIN role');
+        setError('FORBIDDEN');
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const { data } = await apiClient.get('/user/secure');
         setSecureData(data);
       } catch (err) {
+        console.error('❌ Failed to fetch user data:', err);
         setError('FORBIDDEN');
       } finally {
         setIsLoading(false);
@@ -483,7 +537,12 @@ const AdminSecurePage = () => {
         return;
       }
 
-      if (!authService.hasRole('ADMIN')) {
+    
+      const hasAdminRole = authService.hasRole('ADMIN');
+      console.log('🔍 Checking admin access, has ADMIN role:', hasAdminRole);
+      
+      if (!hasAdminRole) {
+        console.log('❌ Access denied - user does not have ADMIN role');
         setError('FORBIDDEN');
         setIsLoading(false);
         return;
@@ -493,6 +552,7 @@ const AdminSecurePage = () => {
         const { data } = await apiClient.get('/admin/secure');
         setSecureData(data);
       } catch (err) {
+        console.error('❌ Failed to fetch admin data:', err);
         setError('FORBIDDEN');
       } finally {
         setIsLoading(false);
