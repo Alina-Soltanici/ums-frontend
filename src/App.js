@@ -710,10 +710,28 @@ const LoginPage = () => {
     try {
       await login(formData);
     } catch (error) {
-      setSubmitStatus({ type: 'error', message: error.message || 'Authentication failed' });
-      setIsLoading(false);
-    }
-  };
+  console.log('LOGIN ERROR:', error);
+
+  if (error.status === 401) {
+    setSubmitStatus({
+      type: 'error',
+      message: error.message || 'Wrong email or password'
+    });
+  } else if (error.status === 403) {
+    setSubmitStatus({
+      type: 'error',
+      message: 'You do not have permission to access this resource'
+    });
+  } else {
+    setSubmitStatus({
+      type: 'error',
+      message: 'Something went wrong. Please try again.'
+    });
+  }
+
+  setIsLoading(false);
+}
+};
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 relative overflow-hidden">
