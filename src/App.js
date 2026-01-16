@@ -845,6 +845,7 @@ const RegisterPage = () => {
 };
 
 
+// ==================== HOME PAGE ====================
 const HomePage = () => {
   const { navigateTo, user, logout } = useAuth();
 
@@ -858,69 +859,57 @@ const HomePage = () => {
       <div className="absolute -top-40 left-1/4 w-[700px] h-[700px] bg-blue-600/20 blur-[260px] rounded-full -z-20" />
       <div className="absolute bottom-0 right-1/4 w-[700px] h-[700px] bg-indigo-500/20 blur-[260px] rounded-full -z-20" />
 
-{/* ===== AURORA NEON BACKGROUND ===== */}
-<div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
-  <motion.div
-    className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-cyan-500/30 rounded-full blur-[180px]"
-    animate={{ x: [0, 80, 0], y: [0, -60, 0] }}
-    transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-  />
-  <motion.div
-    className="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-indigo-500/30 rounded-full blur-[200px]"
-    animate={{ x: [0, -90, 0], y: [0, 70, 0] }}
-    transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-  />
-</div>
+      {/* ===== AURORA NEON BACKGROUND ===== */}
+      <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-cyan-500/30 rounded-full blur-[180px]"
+          animate={{ x: [0, 80, 0], y: [0, -60, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-indigo-500/30 rounded-full blur-[200px]"
+          animate={{ x: [0, -90, 0], y: [0, 70, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </div>
 
-      {/* Grid */}
-      <div
-        className="absolute inset-0 opacity-15 -z-10"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: '90px 90px',
-        }}
-      />
+      {/* Grid overlay */}
+      <div className="absolute inset-0 opacity-15 -z-10" style={{
+        backgroundImage: `
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+        `,
+        backgroundSize: '90px 90px'
+      }} />
 
-      {/* ===== LOGOUT ===== */}
+      {/* ===== LOGOUT BUTTON ===== */}
       <button
         onClick={logout}
         className="absolute top-6 right-6 z-20 flex items-center gap-2 px-5 py-3
-        bg-blue-700/80 hover:bg-blue-800 text-white font-medium rounded-full
-        shadow-[0_0_25px_rgba(0,120,255,0.7)] transition-all"
+          bg-blue-700/80 hover:bg-blue-800 text-white font-medium rounded-full
+          shadow-[0_0_25px_rgba(0,120,255,0.7)] transition-all"
       >
         <LogOut size={18} />
         Logout
       </button>
 
-{/* ===== WELCOME ELEGANT 3D ===== */}
-<div className="relative mb-4">
+      {/* ===== WELCOME TITLE ===== */}
+      <div className="relative mb-4">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9 }}
+          className="text-5xl md:text-6xl font-extrabold tracking-[0.25em] text-white text-center select-none
+            drop-shadow-[0_1px_0_rgba(255,255,255,0.35)]
+            drop-shadow-[0_2px_0_rgba(180,220,255,0.25)]
+            drop-shadow-[0_6px_12px_rgba(0,0,0,0.65)]
+            drop-shadow-[0_0_35px_rgba(0,160,255,0.6)]"
+        >
+          WELCOME
+        </motion.h1>
+      </div>
 
-  <motion.h1
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.9 }}
-    className="
-      text-5xl md:text-6xl
-      font-extrabold tracking-[0.25em]
-      text-white
-      text-center
-      select-none
-
-      /* 3D / bevel effect */
-      drop-shadow-[0_1px_0_rgba(255,255,255,0.35)]
-      drop-shadow-[0_2px_0_rgba(180,220,255,0.25)]
-      drop-shadow-[0_6px_12px_rgba(0,0,0,0.65)]
-      drop-shadow-[0_0_35px_rgba(0,160,255,0.6)]
-    "
-  >
-    WELCOME
-  </motion.h1>
-</div>
-
-      {/* USER NAME */}
+      {/* USER FIRST NAME */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -933,56 +922,36 @@ const HomePage = () => {
       {/* ===== CARDS ===== */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-14 z-10">
 
-        {/* USER */}
-        {/* USER */}
-<motion.div
-  whileHover={{ scale: 1.06, rotateX: 5, rotateY: -5 }}
-  transition={{ type: 'spring', stiffness: 120 }}
-  onClick={() => navigateTo('user-secure')}
-  className="
-    cursor-pointer 
-    w-64 h-44   /* <-- mai mic */
-    rounded-2xl
-    bg-white/5 backdrop-blur-xl
-    border border-emerald-600/30
-    shadow-[0_0_25px_rgba(0,180,120,0.4)]
-    flex flex-col items-center justify-center gap-4 text-white
-  "
->
-  <Users
-    size={48}  /* micsoreaza iconita */
-    className="text-blue-500 drop-shadow-[0_0_30px_rgba(40,90,220,1)]"
-  />
-  <span className="text-lg font-semibold tracking-wide">User Secure</span>
-  <span className="text-sm text-gray-400">Authorized access</span>
-</motion.div>
+        {/* USER SECURE CARD */}
+        <motion.div
+          whileHover={{ scale: 1.06, rotateX: 5, rotateY: -5 }}
+          transition={{ type: 'spring', stiffness: 120 }}
+          onClick={() => navigateTo('user-secure')}
+          className="cursor-pointer w-64 h-44 rounded-2xl bg-white/5 backdrop-blur-xl border border-emerald-600/30
+            shadow-[0_0_25px_rgba(0,180,120,0.4)] flex flex-col items-center justify-center gap-4 text-white"
+        >
+          <Users size={48} className="text-blue-500 drop-shadow-[0_0_30px_rgba(40,90,220,1)]" />
+          <span className="text-lg font-semibold tracking-wide">User Secure</span>
+          <span className="text-sm text-gray-400">Authorized access</span>
+        </motion.div>
 
-{/* ADMIN */}
-<motion.div
-  whileHover={{ scale: 1.06, rotateX: 5, rotateY: 5 }}
-  transition={{ type: 'spring', stiffness: 120 }}
-  onClick={() => navigateTo('admin-secure')}
-  className="
-    cursor-pointer 
-    w-64 h-44   /* <-- mai mic */
-    rounded-2xl
-    bg-white/5 backdrop-blur-xl
-    border border-purple-700/40
-    shadow-[0_0_55px_rgba(120,40,120,0.45)]
-    flex flex-col items-center justify-center gap-4 text-white
-  "
->
-  <Shield
-    size={48}  /* micsoreaza iconita */
-    className="text-purple-400 drop-shadow-[0_0_30px_rgba(160,60,160,1)]"
-  />
-  <span className="text-lg font-semibold tracking-wide">Admin Secure</span>
-  <span className="text-sm text-gray-400">Restricted control</span>
-</motion.div>
-</div>
-</div>
+        {/* ADMIN SECURE CARD */}
+        <motion.div
+          whileHover={{ scale: 1.06, rotateX: 5, rotateY: 5 }}
+          transition={{ type: 'spring', stiffness: 120 }}
+          onClick={() => navigateTo('admin-secure')}
+          className="cursor-pointer w-64 h-44 rounded-2xl bg-white/5 backdrop-blur-xl border border-purple-700/40
+            shadow-[0_0_55px_rgba(120,40,120,0.45)] flex flex-col items-center justify-center gap-4 text-white"
+        >
+          <Shield size={48} className="text-purple-400 drop-shadow-[0_0_30px_rgba(160,60,160,1)]" />
+          <span className="text-lg font-semibold tracking-wide">Admin Secure</span>
+          <span className="text-sm text-gray-400">Restricted control</span>
+        </motion.div>
+      </div>
+    </div>
   );
 };
+
 
 
 
